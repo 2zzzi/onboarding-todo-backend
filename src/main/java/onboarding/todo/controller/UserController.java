@@ -6,10 +6,8 @@ import onboarding.todo.entity.User;
 import onboarding.todo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +18,12 @@ public class UserController {
 
     //https://www.youtube.com/watch?v=pbUHK3Gzgj4&list=PLAdQRRy4vtQTJawYfraUTUf6rCfWFYqKj&index=40
     @PostMapping(value = "/signup")
-    public ResponseEntity<String> join(@RequestBody UserJoinRequest dto){
-        return ResponseEntity.ok().body("회원가입이 성공했습니다.");
+    @ResponseBody
+    public ResponseEntity<String> join( UserJoinRequest dto) throws Exception{
+        String signupResponse = userService.join(dto.getEmail(), dto.getPassword());
+        return ResponseEntity.ok().body(signupResponse);
+
+//        return ResponseEntity.ok().body("회원가입이 성공했습니다.");
     }
 
     @PostMapping(value = "/signin")

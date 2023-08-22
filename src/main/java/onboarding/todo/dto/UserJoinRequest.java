@@ -1,7 +1,6 @@
 package onboarding.todo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
