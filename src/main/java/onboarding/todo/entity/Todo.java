@@ -1,2 +1,7 @@
-package onboarding.todo.entity;public class Todo {
+package onboarding.todo.entity;
+
+public class Todo {
+
+
+
 }
