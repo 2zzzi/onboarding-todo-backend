@@ -1,13 +1,12 @@
 package onboarding.todo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
+@Builder
+@Data
 @AllArgsConstructor
-@Getter
+@NoArgsConstructor
 public class UserLoginRequest {
-
     private String email;
     private String password;
-
 }

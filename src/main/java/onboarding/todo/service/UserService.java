@@ -9,7 +9,6 @@ import onboarding.todo.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 //https://www.youtube.com/watch?v=pbUHK3Gzgj4&list=PLAdQRRy4vtQTJawYfraUTUf6rCfWFYqKj&index=40
 
@@ -35,8 +34,7 @@ public class UserService {
         //저장
         User user = User.builder()
                 .email(email)
-//                .password(encoder.encode(password))
-                .password(password)
+                .password(encoder.encode(password))
                 .build();
 
         userRepository.save(user);
@@ -55,7 +53,6 @@ public class UserService {
         }
 
         //성공 -> 토큰발행
-
         String token = JwtTokenUtil.createToken(selectedUser.getEmail(), key, expireTimeMs);
 
         return token;
