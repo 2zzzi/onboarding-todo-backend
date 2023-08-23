@@ -2,6 +2,7 @@ package onboarding.todo.controller;
 
 import lombok.RequiredArgsConstructor;
 import onboarding.todo.dto.UserJoinRequest;
+import onboarding.todo.dto.UserLoginRequest;
 import onboarding.todo.entity.User;
 import onboarding.todo.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/signin")
-    public void signIn(){
+    public ResponseEntity<String> login(UserLoginRequest dto){
+        String token = userService.login(dto.getEmail(), dto.getPassword());
+        return ResponseEntity.ok().body(token);
     }
 
 }
