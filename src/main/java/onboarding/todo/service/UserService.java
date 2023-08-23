@@ -35,7 +35,8 @@ public class UserService {
         //저장
         User user = User.builder()
                 .email(email)
-                .password(encoder.encode(password))
+//                .password(encoder.encode(password))
+                .password(password)
                 .build();
 
         userRepository.save(user);
