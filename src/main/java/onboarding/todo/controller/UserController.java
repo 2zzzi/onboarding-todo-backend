@@ -19,7 +19,7 @@ import javax.validation.Valid;
 //https://www.youtube.com/watch?v=pbUHK3Gzgj4&list=PLAdQRRy4vtQTJawYfraUTUf6rCfWFYqKj&index=40
 
 @Controller
-@SecurityRequirement(name = "JWT Token")
+//@SecurityRequirement(name = "JWT Token")
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class UserController {
@@ -37,7 +37,8 @@ public class UserController {
     @PostMapping(value = "/signin")
     public ResponseEntity<String> login(@RequestBody @Valid UserLoginRequest dto){
         String token = userService.login(dto.getEmail(), dto.getPassword());
-        return ResponseEntity.ok().body(token);
+        String json = "{\"access_token\" : \"" + token + "\"}";
+        return ResponseEntity.ok().body(json);
     }
 
 }
