@@ -3,21 +3,19 @@ package onboarding.todo.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import onboarding.todo.dto.TodoCreateRequest;
-import onboarding.todo.dto.TodoDeleteRequest;
-import onboarding.todo.dto.TodoGetRequest;
-import onboarding.todo.dto.TodoUpdateRequest;
-import onboarding.todo.entity.Todo;
+import onboarding.todo.dto.TodoDto;
+import onboarding.todo.entity.User;
 import onboarding.todo.repository.TodoRepository;
+import onboarding.todo.repository.UserRepository;
 import onboarding.todo.service.TodoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,35 +25,40 @@ public class TodoController {
 
     private final TodoService todoService;
     private final TodoRepository todoRepository;
+    private final UserRepository userRepository;
 
     @Operation(summary = "Todo 생성")
     @PostMapping("")
-    public ResponseEntity<String> createTodo(Authentication authentication){
-
-        return ResponseEntity.ok().body(authentication.getName() + "Success: Create Todo");
+    public ResponseEntity<TodoDto> createTodo(Principal principal, @RequestBody @Valid TodoDto dto){
+        Optional<User> userOp = userRepository.findByEmail(principal.getName());
+        System.out.println("principal = " + principal.getName());
+        User user = userOp.get();
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoService.createTodo(user, dto));
     }
 
     @Operation(summary = "Todo 조회")
     @GetMapping("")
-    public ResponseEntity<String> getTodo(Model model) {
-        List<Todo> todos = this.todoService.get();
-        model.addAttribute("todo", todos);
-        return ResponseEntity.ok().body("Success: Get Todo");
+    public ResponseEntity<List<TodoDto>> getTodo(Principal principal) {
+        Optional<User> userOp = userRepository.findByEmail(principal.getName());
+        User user = userOp.get();
+        System.out.println("Get Logic is running");
+        System.out.println(todoService.getTodoList(user));
+        System.out.println();
+        todoService.getTodoList(user);
+        return ResponseEntity.ok().body(todoService.getTodoList(user));
     }
 
     @Operation(summary = "Todo 업데이트")
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateTodo(@PathVariable("id") Long id) {
-
+    public ResponseEntity<String> updateTodo(Long id) {
         return ResponseEntity.ok().body("Success: Update Todo");
     }
-
-    @Operation(summary = "Todo 삭제")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> updateTodo(@PathVariable("id") Long id, @RequestBody TodoDeleteRequest dto) {
-
-        return ResponseEntity.ok().body("Success: Delete Todo");
-    }
+//
+//    @Operation(summary = "Todo 삭제")
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<String> deleteTodo(Long id) {
+//        return ResponseEntity.ok().body("Success: Delete Todo");
+//    }
 
 
 }

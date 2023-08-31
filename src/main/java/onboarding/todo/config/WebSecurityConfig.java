@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**", "/v3/api-docs/**", "/swagger*/**").permitAll()
+                .antMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**","/v3/api-docs").permitAll()
                 .antMatchers(HttpMethod.POST, "/todos").authenticated()
                 .and()
                 .sessionManagement()

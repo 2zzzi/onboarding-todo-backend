@@ -20,9 +20,13 @@ public class Todo {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private String todos;
-    private String status;
 
+    public Todo(User user, String todos) {
+        this.user = user;
+        this.todos = todos;
+    }
 }

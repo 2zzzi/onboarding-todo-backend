@@ -1,14 +1,15 @@
 package onboarding.todo.service;
 
 import lombok.RequiredArgsConstructor;
-import onboarding.todo.dto.TodoCreateRequest;
-import onboarding.todo.dto.TodoGetRequest;
+import onboarding.todo.dto.TodoDto;
 import onboarding.todo.entity.Todo;
+import onboarding.todo.entity.User;
 import onboarding.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,32 +17,30 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
 
-    public String create(String todos) {
-        //Token을 받아와서 uid를 빼와야할거같은데 생각을 더 해보자잉
-        Long uid = 100l;
-
-        //Save
-//        Todo todo = Todo.builder()
-//                .user(uid)
-//                .todos(todos)
-//                .status("200")
-//                .build();
-//
-//        todoRepository.save(todo);
-
-        return "SUCCESS: Create Service!";
+    public TodoDto createTodo(User user, TodoDto todos) {
+        Todo toEntity = new Todo(user, todos.getTodo());
+        return TodoDto.from(todoRepository.save(toEntity));
     }
 
-    public List<Todo> get() {
-        //Token으로 유저 아이디를 받아와서 모든 Todo를 List로 만들어줘야할거같음
-        return this.todoRepository.findAll();
+    public List<TodoDto> getTodoList(User user) {
+        return todoRepository.findAllByUserId(user.getId())
+                .stream().map(todo -> new TodoDto(todo.getId(), todo.getTodos())).toList();
     }
 
-    public String update(Long id, String todos) {
+    public Todo getTodoById(Long id) {
+        Optional<Todo> optionalTodo = todoRepository.findById(id);
+        return optionalTodo.get();
 
-
-        return "SUCCESS: Update Service!";
     }
+
+//    public Todo updateTodo(Long id, Todo updatedTodo) {
+//        Todo todo = getTodoById(id);
+//        // 여기에서 Todo 수정 로직을 구현하면 됩니다.
+//        // 예를 들어, 제목과 내용을 업데이트하는 로직:
+//        todo.todos(updatedTodo.getTitle());
+//        todo.setDescription(updatedTodo.getDescription());
+//        return todoRepository.save(todo);
+//    }
 
     public String delete(Long id) {
 

@@ -3,6 +3,7 @@ package onboarding.todo.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -18,7 +19,8 @@ public class User {
     private String email;
     private String password;
 
-    @OneToMany
-    private List<Todo> todos;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Todo> todos = new ArrayList<>();
+
 
 }
