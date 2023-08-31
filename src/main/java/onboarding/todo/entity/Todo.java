@@ -20,7 +20,6 @@ public class Todo {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private String todos;
@@ -29,4 +28,9 @@ public class Todo {
         this.user = user;
         this.todos = todos;
     }
+
+    public void Update(String todos) {
+        this.todos = todos;
+    }
+
 }

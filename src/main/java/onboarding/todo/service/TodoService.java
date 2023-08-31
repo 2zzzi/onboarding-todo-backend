@@ -7,6 +7,7 @@ import onboarding.todo.entity.User;
 import onboarding.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,24 +28,17 @@ public class TodoService {
                 .stream().map(todo -> new TodoDto(todo.getId(), todo.getTodos())).toList();
     }
 
-    public Todo getTodoById(Long id) {
-        Optional<Todo> optionalTodo = todoRepository.findById(id);
-        return optionalTodo.get();
-
+    @Transactional
+    public TodoDto updateTodo(Long id, TodoDto dto) {
+        Todo todoEntity = todoRepository.findById(id).get();
+        todoEntity.Update(dto.getTodo());
+        this.todoRepository.save(todoEntity);
+        return TodoDto.from(todoEntity);
     }
 
-//    public Todo updateTodo(Long id, Todo updatedTodo) {
-//        Todo todo = getTodoById(id);
-//        // 여기에서 Todo 수정 로직을 구현하면 됩니다.
-//        // 예를 들어, 제목과 내용을 업데이트하는 로직:
-//        todo.todos(updatedTodo.getTitle());
-//        todo.setDescription(updatedTodo.getDescription());
-//        return todoRepository.save(todo);
-//    }
-
-    public String delete(Long id) {
-
-        return "SUCCESS: Delete Service!";
+    @Transactional
+    public void delete(Long id) {
+        Todo todoEntity = todoRepository.findById(id).get();
+        this.todoRepository.delete(todoEntity);
     }
-
 }
