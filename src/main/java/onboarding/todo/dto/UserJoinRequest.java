@@ -6,7 +6,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@Data
 public class UserJoinRequest {
     private String email;
     private String password;
