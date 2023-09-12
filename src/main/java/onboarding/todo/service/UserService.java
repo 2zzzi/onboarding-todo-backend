@@ -1,6 +1,7 @@
 package onboarding.todo.service;
 
 import lombok.RequiredArgsConstructor;
+import onboarding.todo.dto.UserLoginResponse;
 import onboarding.todo.entity.User;
 import onboarding.todo.exception.AppException;
 import onboarding.todo.exception.ErrorCode;
@@ -20,7 +21,7 @@ public class UserService {
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.token.secret}")
     private String key;
-    private Long expireTimeMs = 1000 * 60 * 60l;
+    private String LOGIN_SUCCESS = "SUCCESS";
 
 
     public String join(String email, String password) {
@@ -39,10 +40,10 @@ public class UserService {
 
         userRepository.save(user);
 
-        return "SUCCESS";
+        return LOGIN_SUCCESS;
     }
 
-    public String login(String email, String password) {
+    public UserLoginResponse login(String email, String password) {
         //Email 없음
         User selectedUser =  userRepository.findByEmail(email)
                 .orElseThrow(() ->new AppException(ErrorCode.USERNAME_NOT_FOUND, email + "이 없습니다."));
@@ -53,9 +54,9 @@ public class UserService {
         }
 
         //성공 -> 토큰발행
-        String token = JwtTokenUtil.createToken(selectedUser.getEmail(), key, expireTimeMs);
+        String token = JwtTokenUtil.createToken(selectedUser.getEmail(), key);
 
-        return token;
+        return new UserLoginResponse(token);
     }
 
 }

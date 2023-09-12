@@ -29,7 +29,7 @@ public class Todo {
         this.todos = todos;
     }
 
-    public void Update(String todos) {
+    public void update(String todos) {
         this.todos = todos;
     }
 

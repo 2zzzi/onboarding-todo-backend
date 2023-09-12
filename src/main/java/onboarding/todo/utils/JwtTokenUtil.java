@@ -18,7 +18,8 @@ public class JwtTokenUtil {
                 .getBody().getExpiration().before(new Date());
     }
 
-    public static String createToken(String email, String key, long expireTimeMs) {
+    public static String createToken(String email, String key) {
+        Long expireTimeMs = 1000 * 60 * 60L;
         Claims claims = Jwts.claims();
         claims.put("email", email);
 

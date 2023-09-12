@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //Token 꺼내기
         String token = authorization.split(" ")[1];
-        log.info("token = {}", token);
+//        log.info("token = {}", token);
 
         //Token Expired 되었는지 여부
         if (JwtTokenUtil.isExpired(token, secretKey)) {
@@ -51,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //UserName Token에서 꺼내기
         String email = JwtTokenUtil.getEmail(token, secretKey);
-        log.info("Email: {}", email);
+//        log.info("Email: {}", email);
         //권한부여
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, null, List.of(new SimpleGrantedAuthority("USER")));
