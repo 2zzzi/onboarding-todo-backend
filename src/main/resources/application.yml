@@ -1,0 +1,24 @@
+server:
+  servlet:
+    encoding:
+      force-response: true
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/todo
+    username: root
+    password: qhdks12##
+
+jwt:
+  token:
+    secret: "secretKey"
+
+springdoc:
+  paths-to-match:
+    - /auth/**
+    - /**/*
